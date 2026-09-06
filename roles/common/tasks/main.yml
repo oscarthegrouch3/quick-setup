@@ -4,10 +4,32 @@
     update_cache: yes
     cache_valid_time: 3600
 
+- name: Enable Ubuntu Universe repository
+  apt_repository:
+    repo: 'universe'
+    state: present
+  when: ansible_os_family == "Debian" and ansible_distribution == "Ubuntu"
+
+- name: Enable Debian contrib and non-free components
+  shell: |
+    sed -i 's/main$/main contrib non-free non-free-firmware/g' /etc/apt/sources.list
+    sed -i 's/main\s*$/main contrib non-free non-free-firmware/g' /etc/apt/sources.list
+  when: ansible_os_family == "Debian" and ansible_distribution == "Debian"
+  changed_when: true
+
+- name: Update apt cache after repository changes
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
 - name: Install common utility packages
   apt:
     name: "{{ common_packages }}"
     state: present
+  register: common_install
+  until: common_install is succeeded
+  retries: 3
+  delay: 5
 
 - name: Ensure keyrings directory exists
   file:
