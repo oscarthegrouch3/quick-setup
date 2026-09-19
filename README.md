@@ -1,61 +1,43 @@
-# QuickSetup Ansible VM Provisioning
+# QuickSetup
 
-Automated Ansible project to quickly set up a Linux VM (Ubuntu/Debian) with applications, developer tools, and terminal configurations.
+Ansible playbook that sets up an **Ubuntu** VM. Pick a profile per VM.
 
-### Option 1: One-Command Bootstrap (Recommended for new VMs)
-Clone the repository to your VM and run the bootstrap script:
+## Usage
+
 ```bash
-chmod +x bootstrap.sh
-sudo ./bootstrap.sh
+sudo apt update && sudo apt install -y ansible git
+git clone <repo-url> quicksetup && cd quicksetup
+
+ansible-playbook site.yml -e profile=development --ask-become-pass
 ```
-This automatically installs Ansible and provisions all tools and desktop applications locally.
 
----
+Run as your normal user, not with `sudo`.
 
-### Option 2: Run via Ansible CLI
+## Profiles
 
-If Ansible is already installed:
+Profiles live in [`profiles/`](profiles/). You must pass one with `-e profile=<name>`.
+
+| Profile | Installs |
+|---|---|
+| `development` | common, desktop, development, shell |
+| `offensive` | common, desktop, offensive, shell |
+
+To add one, copy a file in `profiles/` and use its name as the `profile` value.
+
+## Roles
+
+- **common:** vim, wget, curl, git, unzip, gnupg2, Universe repo
+- **desktop:** Firefox, VS Code, Ghostty
+- **development:** Docker, Neovim, Postman
+- **shell:** Zsh (default shell), tmux, bat, htop
+- **offensive:** Nmap, Netcat, Chisel, NetExec, SearchSploit, Proxychains, Impacket, LinPEAS, WinPEAS, GTFOBins, wordlists/SecLists, Hydra, John, Burp Suite, ffuf, smbmap
+
+## Options
+
+Turn a role on or off in the profile (`install_desktop`, `install_development`, `install_offensive`, `install_shell`). Skip a single tool with an extra var:
+
 ```bash
-# Provision local VM
-sudo ansible-playbook -i inventory.ini site.yml --connection=local
+ansible-playbook site.yml -e profile=development -e install_docker=false --ask-become-pass
+```
 
----
-
-## Included Applications & Tools
-
-### Desktop Applications
-- **Firefox** (`apt` / `firefox-esr`)
-- **VS Code** (Official Microsoft APT repository)
-- **Ghostty** (Snap package with classic confinement)
-
-### Developer Tools
-- **Docker & Docker Compose** (Official Docker APT repository + `docker` user group addition)
-- **Neovim** (`apt`)
-- **Postman** (API client)
-- **Pi Coding Agent** (Minimal terminal coding harness)
-
-### Shell & CLI Utilities
-- **Zsh** (Set as default user shell)
-- **CLI Tools**: `curl`, `wget`, `git`, `build-essential`, `htop`, `jq`, `unzip`, `tree`, `tmux`
-
----
-
-## Customization & Configuration
-
-All options can be enabled or disabled in [`group_vars/all.yml`]
-
-```yaml
-# Feature Toggles
-install_desktop_apps: true
-install_dev_tools: true
-install_shell_tools: true
-
-# Specific Tool Toggles
-install_vscode: true
-install_firefox: true
-install_postman: true
-install_ghostty: true
-install_docker: true
-install_neovim: true
-install_pi_agent: true
-install_zsh: true
+Tool vars: `install_firefox`, `install_vscode`, `install_ghostty`, `install_docker`, `install_neovim`, `install_postman`, `install_zsh`. All default to `true`.

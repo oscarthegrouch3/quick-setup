@@ -1,7 +1,6 @@
 ---
-# Desktop Setup:
+# Desktop Setup: Desktop, Shell, and Development
 install_desktop: true
 install_shell: true
 install_development: true
 install_offensive: false
-
