@@ -17,6 +17,6 @@
 - name: Clone SecLists
   ansible.builtin.git:
     repo: https://github.com/danielmiessler/SecLists.git
-    dest: /opt/offensive-tools/seclists
+    dest: /opt/offensive/seclists
     depth: 1
     version: master

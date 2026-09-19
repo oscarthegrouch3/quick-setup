@@ -7,14 +7,14 @@
 
 - name: Create Burp Suite install directory
   ansible.builtin.file:
-    path: /opt/offensive-tools/burpsuite
+    path: /opt/offensive/burpsuite
     state: directory
     mode: '0755'
 
 - name: Download Burp Suite Community jar installer
   ansible.builtin.get_url:
     url: "https://portswigger.net/burp/releases/download?product=community&type=jar"
-    dest: /opt/offensive-tools/burpsuite/burpsuite_community.jar
+    dest: /opt/offensive/burpsuite/burpsuite_community.jar
     mode: '0755'
 
 - name: Create launcher script
@@ -23,4 +23,4 @@
     mode: '0755'
     content: |
       #!/bin/bash
-      java -jar /opt/offensive-tools/burpsuite/burpsuite_community.jar "$@"
+      java -jar /opt/offensive/burpsuite/burpsuite_community.jar "$@"

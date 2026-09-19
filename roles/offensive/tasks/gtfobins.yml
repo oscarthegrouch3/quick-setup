@@ -2,6 +2,6 @@
 - name: Clone GTFOBins site repo for offline reference
   ansible.builtin.git:
     repo: https://github.com/GTFOBins/GTFOBins.github.io.git
-    dest: /opt/offensive-tools/gtfobins
+    dest: /opt/offensive/gtfobins
     depth: 1
     version: master

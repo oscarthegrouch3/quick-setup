@@ -1,29 +1,8 @@
----
-- name: QuickSetup - Provision VM Environment
-  hosts: all
+- hosts: localhost
+  connection: local
   become: true
-  vars_files:
-    - "profiles/{{ profile }}.yml"
-  pre_tasks:
-    - name: Check the profile exists
-      stat:
-        path: "{{ playbook_dir }}/profiles/{{ profile }}.yml"
-      register: profile_file
-      tags: always
-
-    - name: Fail if the profile is missing
-      assert:
-        that: profile_file.stat.exists
-        fail_msg: "Profile '{{ profile }}' not found in profiles/."
-        quiet: true
-      tags: always
   roles:
-    - role: common
-    - role: desktop
-      when: install_desktop | default(false)
-    - role: development
-      when: install_development | default(false)
-    - role: offensive
-      when: install_offensive | default(false)
-    - role: shell
-      when: install_shell | default(false)
+    - { role: offensive, tags: [offensive] }
+    - { role: desktop, tags: [desktop] }
+    - { role: development, tags: [development] }
+  
