@@ -1,0 +1,12 @@
+---
+- name: Include Firefox setup
+  include_tasks: firefox.yml
+  when: install_firefox | default(true)
+
+- name: Include VS Code setup
+  include_tasks: vscode.yml
+  when: install_vscode | default(true)
+
+- name: Include Ghostty setup
+  include_tasks: ghostty.yml
+  when: install_ghostty | default(true)

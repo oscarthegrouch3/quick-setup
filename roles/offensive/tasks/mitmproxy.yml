@@ -1,0 +1,22 @@
+---
+- name: Set mitmproxy version
+  ansible.builtin.set_fact:
+    mitmproxy_version: "12.3.0"
+
+- name: Download mitmproxy source
+  ansible.builtin.get_url:
+    url: "https://github.com/mitmproxy/mitmproxy/archive/refs/tags/v{{ mitmproxy_version }}.tar.gz"
+    dest: "/tmp/mitmproxy.tar.gz"
+    mode: '0644'
+
+- name: Extract mitmproxy
+  ansible.builtin.command: tar -xzf /tmp/mitmproxy.tar.gz -C /tmp
+  args:
+    creates: /tmp/mitmproxy
+
+- name: Install mitmproxy to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/mitmproxy
+    dest: /usr/local/bin/mitmproxy
+    mode: '0755'
+    remote_src: yes

@@ -1,0 +1,6 @@
+- hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - { role: offensive, tags: [offensive] }
+    - { role: desktop, tags: [desktop] }  
