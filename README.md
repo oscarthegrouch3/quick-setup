@@ -1,6 +1,6 @@
 # QuickSetup
 
-Ansible playbook that sets up an **Ubuntu** VM. Pick a profile per VM.
+Ansible playbook that sets up a Linux VM. Pick a profile per VM.
 
 ## Usage
 
